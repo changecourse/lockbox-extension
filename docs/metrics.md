@@ -144,24 +144,41 @@ All events are currently implemented under the **category: lockboxV0**. The `ext
 
 9. `feedbackClick` fires when the user clicks the "Send Feedback" button. **objects**: manage
 
-10. `resetRequested` fires when the user clicks the "Reset" button in the Lockbox settings. **objects**: settings
+10. `faqClick` fires when the user clicks the "FAQ" button. **objects**: manage
 
-11. `resetCompleted` fires when the user completes a reset of their Lockbox data in the Lockbox settings. **objects**: settings
+11. `resetRequested` fires when the user clicks the "Reset" button in the Lockbox settings. **objects**: settings
 
-## List of Planned Events
+12. `resetCompleted` fires when the user completes a reset of their Lockbox data in the Lockbox settings. **objects**: settings
 
-These events will be implemented once the corresponding functionality is available.
+13. `fxaStart` fires when a user clicks the sign-in or sign-up button from the manager or firstrun screen. used to log user initiating fxa auth process. **objects**: welcomeSignin, manageAcctCreate, manageAcctSignin, unlockSignin
 
-1. `fxaSignIn` fires when someone clicks the signin button during firstrun. **objects**: fxaSignInPage.
+14. `fxaAuth` has methods `fxaUpgrade`, `fxaSignin` and `fxaSignout` that fire when the user initially adds their fxa account to lockbox, signs in after having added their fxa account previously, or signs out of fxa. **object**: accounts
 
-2. `confirmPW` fires when the user clicks the button to confirm their FxA pw. **objects**: confirmPWButton
+15. `fxaFail` fires when the fxa process fails **objects**: accounts
 
-3. `doorhangerItemSelected` fires when a user clicks an item in the doorhanger's itemlist. **objects** doorhanger  
+## Sketch of iOS Telemetry Plan
 
-4. `doorhangerItemCopied` fires when a user copies an item's username/password from the doorhanger's entry view. **objects** doorhangerEntryDetails.  
+These events are based on the invisionapp design plan
 
-5. `doorhangerAddClick` fires when the user clicks to add a new entry from the doorhanger. **objects** doorhanger  
+1. `fxaStart` fires when a user taps the sign-in or sign-up button from the welcome screen. used to log user initiating fxa auth process.
 
+2. `fxaAuth` has methods `fxaSignin` and `fxaSignout` that fire when the user signs into or out of their fxa account.
+
+3. `touchIdEnabled`, `faceIdEnabled`, `touchIdSkipped`, `faceIdSkipped` fire when a user successfully authorizes the use of touchID/faceID to unlock lockbox or taps to skip.
+
+4. `browserEnabled` fires when user successfully adds lockbox integration to their browser. **objects**: `firefox`, `chrome`, `safari`
+
+5. `usernameCopied` and `passwordCopied` fire when a user copies their username or password from an item. **objects**: itemList
+
+6. `itemSelected` fires when a user taps an item in the itemlist. **objects** itemList
+
+7. `itemShow` fires when a user taps to view item details in the itemlist. **objects** itemList
+
+8. `settingsTap` fires when a user taps an entry on the settings page. **object** will label the setting that was tapped
+
+9. `settingsChanged` fires when a user toggles a changeable setting. **object** will label the setting that was toggled
+
+10. `feedbackSent` Fires when a user sends feedback through the feedback form.
 
 ---
 
