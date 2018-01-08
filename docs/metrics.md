@@ -10,6 +10,7 @@ _Last Updated: Nov 28, 2017_
 - [Metrics Overview](#metrics-overview)
 - [Non-Event Metrics](#non-event-metrics)
 - [List of Events Currently Recorded](#list-of-events-currently-recorded)
+- [Sketch of iOS Telemetry Plan](#sketch-of-ios-telemetry-plan)
 - [References](#references)
 
 <!-- /TOC -->
