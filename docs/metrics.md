@@ -7,7 +7,6 @@ _Last Updated: Nov 28, 2017_
 - [Analysis](#analysis)
 - [Collection](#collection)
 	- [Event Registration and Recording](#event-registration-and-recording)
-- [Metrics Overview](#metrics-overview)
 - [Non-Event Metrics](#non-event-metrics)
 - [List of Events Currently Recorded](#list-of-events-currently-recorded)
 - [Sketch of iOS Telemetry Plan](#sketch-of-ios-telemetry-plan)
@@ -15,47 +14,54 @@ _Last Updated: Nov 28, 2017_
 
 <!-- /TOC -->
 
-This is the metrics collection plan for Lockbox's alpha release. It documents all events currently collected through telemetry, as well those planned for collection but not currently implemented. It will be updated to reflect all new and planned data collection.
+This is the metrics collection plan for Lockbox. It documents all events currently collected through telemetry, as well those planned for collection but not currently implemented. It will be updated periodically to reflect all new and planned data collection.
 
 ## Analysis
 
-Data collection is done solely for the purpose of product development, improvement and maintenance. We are particularly interested in data that will help us answer the following questions.
+Data collection is done solely for the purpose of product development, improvement and maintenance. Specifically, it is done to help its creators examine the validity of the following hypothesis.
+
+Core Hypothesis: **We believe that people want the browser to do more than only remember their passwords.**
+
+We will know this to be true when:
+
+1. The password generator is clicked 20% of the time a new entry is created. **This will indicate that users value the ability to create secure passwords.** (Events regarding password generation will be added when feature development is complete)
+
+2. 75% of Lockbox downloads result in a Firefox account attached. **This will indicate that users value secure storage for their credentials.** We currently record the event `fxaUpgrade` to know whether a user has attached an Firefox account to their lockbox installation.
+
+3. 60% of users choose to import their existing credentials from Firefox into Lockbox. **This will indicate that users trust lockbox more than the browser for managing their credentials.** (Events regarding the importing of credentials from the firefox password manager will be added when feature development is complete)
+
+4. We observe increased engagement with the management system (Create-Read-Update-Delete; CRUD) for users that import their credentials. **This will indicate that users value greater visibility into the number of accounts that they have.** We currently record `render` events when a user opens the credential manager.
+
+5. CRUD usage rates are comparable to Firefox login manager usage prior to lockbox installation. **This will indicate that users value Lockbox's credential management system, and use it to access credentials when they are needed.** Firefox telemetry currently collects data on password autofill usage, which requires credentials be stored in the firefox password manager. We plan to compare lockbox credential usage (e.g. via the `usernameCopied` and `passwordCopied` lockbox events) to pre-lockbox autofill frequencies on a per-user basis.
+
+Other questions we aim to answer through data collection, but are not directly related to the hypothesis above:
 
 - Do people Save Passwords in Lockbox?
-    - How many? (measured by count of items saved per user)
-    - How often? (number of credentials saved per user per time interval)
+	- How many? (measured by count of items saved per user)
+	- How often? (number of credentials saved per user per time interval)
 - Do people create their own passwords or use Lockbox to generate them?
-    - Ratio: (Number of times the PW generator is used when storing an item) / (number of credentials stored)
+	- Ratio: (Number of times the PW generator is used when storing an item) / (number of credentials stored)
+- When using the pw generator, do people create purely random passwords or customize them with their own input?
 - Do people use the passwords they store on Lockbox?
-    - How many times (per some unit of time) do stored credentials get auto-filled or copied to the clipboard?
-    - How many times do users click to reveal a password?
-- How well does does auto-filling credentials work **(not in alpha)**?
-    - When credentials are auto-filled, are they filled into the correct fields?
-    - How often must the user make a change to what fields were filled?
-        - How to measure these things??? is there an easier way than just asking if the auto-fill didn't work?
+	- How many times (per some unit of time) are stored credentials accessed?
+- How many times do users click to reveal a password?
 - Do people continue to use Lockbox after first use?
-    - Out of those who install, how many use it more than once?
+- Out of those who install, how many use it more than once?
 - Where are the drop-off points in the user flow?
-    - Do the majority of people make it all the way through the setup process?
-    - Once initially setup, do people continue to add credentials?
-- What are people's opinions on LB
-    - Feedback forms
-- Do people sync their passwords **(not in alpha)**?
-    - How does syncing affect engagement?
-- What type of sites do people use Lockbox with?
-    - Do they use Lockbox only for their most sensitive accounts?
+- Do the majority of people make it all the way through the setup process?
+- Once initially setup, do people continue to add credentials?
+- Do people sync their passwords between Firefox instances?
+- How does syncing affect engagement?
 
 ## Collection
 
-**Note:** *This is the collection plan for our internal alpha release. For our beta release will be taking advantage of test pilot's telemetry API. The metrics plan for beta will be described in a separate document.*
-
 At this point, all measurements related to Lockbox will be made client-side. However, future releases will give users the option to sync their Lockbox data via an FxA account, at which point additional measurements will be logged server-side through the FxA data pipeline. We are not directly responsible for the measurements made through that mechanism.
 
-For our internal alpha release, we will be making use of the public JavaScript API that allows recording and sending of event data through an add-on. **This means that for our alpha release we will only be collecting event-based data**. The API is documented here:
+For our internal alpha release, we will be making use of the public JavaScript API that allows recording and sending of event data and scalar data through an add-on. The API is documented here:
 
 https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/collection/events.html#the-api
 
-Once the events are logged in the client they should appear in [about:telemetry](about:telemetry). From there they will be submitted in the main ping payload under `processes.dynamic.events` and available through the usual services (STMO and ATMO), as well as amplitude.
+Once events are logged in the client they should appear in [about:telemetry](about:telemetry). From there they will be submitted in the main ping payload under `processes.dynamic.events` and available through the usual services (STMO and ATMO), as well as amplitude.
 
 ### Event Registration and Recording
 
@@ -95,33 +101,17 @@ When recording, we can use `null` for `value`.
 
 See the Events section for specific examples of event registration and recording.
 
-## Metrics Overview
-
-(this section may redundant with analysis section)
-For alpha, we'd like to (ideally) like to be able to track the following general categories of things:
-
-- The setup flow, so we can know at what points (if any) people quit the flow before finishing it
-- Top-level interactions centered around use of the Lockbox toolbar icon. This includes interactions within the initial doorhanger that is displayed when the user clicks the icon.
-- Interactions with the list of the user's Lockbox items (credentials)
-- Interactions with the add / modify dialogs used to enter / edit item information
-- Changes to the datastore that actually contains the user's items, in addition to user actions that lead to those changes
-- When the user submits feedback about Lockbox
-- Usage of the copy and reveal functions for stored Lockbox items.
-
-Each of these are described below within their own Events subsection.
-
-
 ## Non-Event Metrics
 
-These are the metrics we plan to collect regarding the state of user datastores. Note that we won't be able to record these directly for alpha. We will have to infer them from the event data.
+These are the metrics we plan to collect regarding the state of user datastores.
 
-- `n_items` The number of credentials that exist in the user's datastore. Integer
+- `n_items` Scalar; The number of credentials that exist in the user's datastore. Integer
 
-- `n_notes` The number of items for which the user has manually entered custom notes for. Integer
+- `n_notes` Scalar; The number of items for which the user has manually entered custom notes for. Integer
 
-- `timestamp_last` The timestamp of the last edit the user made to the datastore. Does not necessarily correspond to the last time they opened the CRUD editor.
+- `timestamp_last` Scalar; The timestamp of the last edit the user made to the datastore. Does not necessarily correspond to the last time they opened the CRUD editor.
 
-- `n_uses` The number of times a user copied or auto-filled a Lockbox item.
+- `n_uses` Scalar; The number of times a user copied or auto-filled a Lockbox item.
 
 ## List of Events Currently Recorded
 
