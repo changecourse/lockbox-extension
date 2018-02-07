@@ -34,6 +34,9 @@ We will know this to be true when:
 
 5. CRUD usage rates are comparable to Firefox login manager usage prior to lockbox installation. **This will indicate that users value Lockbox's credential management system, and use it to access credentials when they are needed.** Firefox telemetry currently collects data on password autofill usage, which requires credentials be stored in the firefox password manager. We plan to compare lockbox credential usage (e.g. via the `usernameCopied` and `passwordCopied` lockbox events) to pre-lockbox autofill frequencies on a per-user basis.
 
+6. 20% of Lockbox users access their datastore on more than 1 device, **indicating that users value having a single datastore of credentials.**
+
+
 Other questions we aim to answer through data collection, but are not directly related to the hypothesis above:
 
 - Do people Save Passwords in Lockbox?
@@ -41,17 +44,19 @@ Other questions we aim to answer through data collection, but are not directly r
 	- How often? (number of credentials saved per user per time interval)
 - Do people create their own passwords or use Lockbox to generate them?
 	- Ratio: (Number of times the PW generator is used when storing an item) / (number of credentials stored)
-- When using the pw generator, do people create purely random passwords or customize them with their own input?
+- When using the pw generator, do people create purely random passwords or customize them with their own input? (if this is going to be in the final design)
 - Do people use the passwords they store on Lockbox?
-	- How many times (per some unit of time) are stored credentials accessed?
+	- How many times (per some unit of time) do stored credentials get filled?
+	- How many times (per some unit of time) do stored credentials get copied?
 - How many times do users click to reveal a password?
 - Do people continue to use Lockbox after first use?
-- Out of those who install, how many use it more than once?
+	- Out of those who install, how many use it more than once?
 - Where are the drop-off points in the user flow?
-- Do the majority of people make it all the way through the setup process?
-- Once initially setup, do people continue to add credentials?
+	- Do the majority of people make it all the way through the setup process?
+	- Once initially setup, do people continue to add credentials?
 - Do people sync their passwords between Firefox instances?
-- How does syncing affect engagement?
+	- How does syncing affect engagement?
+
 
 ## Collection
 
